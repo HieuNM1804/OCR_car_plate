@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/yolo_car_plate/runs/mlflow/289171221918941447/27c0bcfbf1e84297b30683d23cc9d3b9/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '289171221918941447'
+lifecycle_stage: active
+run_id: 27c0bcfbf1e84297b30683d23cc9d3b9
+run_name: yolo_car_plate8
+run_uuid: 27c0bcfbf1e84297b30683d23cc9d3b9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756848521914
+status: 1
+tags: []
+user_id: Admin

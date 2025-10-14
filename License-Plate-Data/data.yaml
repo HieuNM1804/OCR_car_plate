@@ -1,0 +1,5 @@
+train: "D:/yolo_car_plate/License-Plate-Data/train"
+val: "D:/yolo_car_plate/License-Plate-Data/test"
+
+nc: 1
+names: ["license_plate"]
