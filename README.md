@@ -284,4 +284,8 @@ Ví dụ:
 Animal → Dog → German Shepherd
 
 
+<<<<<<< HEAD
 Khi đó, nếu ảnh là “German Shepherd” nhưng YOLO chỉ đoán “Dog”, mô hình vẫn được xem là đúng một phần.
+=======
+Khi đó, nếu ảnh là “German Shepherd” nhưng YOLO chỉ đoán “Dog”, mô hình vẫn được xem là đúng một phần.
+>>>>>>> 3b264d4 (Add demo.gif and update README)
