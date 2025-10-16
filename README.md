@@ -81,9 +81,7 @@ Ngoài ra, mỗi cell còn dự đoán:
    * 1 confidence score cho mỗi box
    * 20 class probabilities
 3. **Tính toán class-specific confidence score**:
-   $$
-   P(\text{class}*i) \times \text{IoU}*{\text{pred, truth}}
-   $$
+   $P(\text{class}*i) \times \text{IoU}*{\text{pred, truth}}$
 4. **Áp dụng Non-Max Suppression (NMS)** để loại bỏ các box trùng lặp.
 
 ## 5. Hàm mất mát (Loss function)
@@ -92,37 +90,27 @@ YOLOv1 sử dụng một loss function duy nhất để huấn luyện toàn b�
 
 Tổng quát, loss bao gồm 3 phần chính:
 
-$$
-\text{Loss} = \text{Loss}*{\text{coord}} + \text{Loss}*{\text{confidence}} + \text{Loss}_{\text{class}}
-$$
+$$\text{Loss} = \text{Loss}*{\text{coord}} + \text{Loss}*{\text{confidence}} + \text{Loss}_{\text{class}}$$
 
 ### 1. Localization Loss (tọa độ box)
 
-$$
-\lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}}
+$$\lambda_{\text{coord}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}}
 \left[
 (x_i - \hat{x}_i)^2 + (y_i - \hat{y}_i)^2 + (\sqrt{w_i} - \sqrt{\hat{w}_i})^2 + (\sqrt{h_i} - \sqrt{\hat{h}_i})^2
-\right]
-$$
+\right]$$
 
 → Mục tiêu: Dự đoán chính xác tọa độ và kích thước box.
 
 ### 2. Confidence Loss
 
 * Với box **có vật thể**:
-  $$
-  \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} (C_i - \hat{C}_i)^2
-  $$
+  $$\sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{obj}} (C_i - \hat{C}_i)^2$$
 * Với box **không có vật thể**:
-  $$
-  \lambda_{\text{noobj}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{noobj}} (C_i - \hat{C}_i)^2
-  $$
+  $$\lambda_{\text{noobj}} \sum_{i=0}^{S^2} \sum_{j=0}^{B} \mathbb{1}_{ij}^{\text{noobj}} (C_i - \hat{C}_i)^2$$
 
 ### 3. Classification Loss
 
-$$
-\sum_{i=0}^{S^2} \mathbb{1}*i^{\text{obj}} \sum*{c \in \text{classes}} (p_i(c) - \hat{p}_i(c))^2
-$$
+$$\sum_{i=0}^{S^2} \mathbb{1}*i^{\text{obj}} \sum*{c \in \text{classes}} (p_i(c) - \hat{p}_i(c))^2$$
 
 ###  Hệ số điều chỉnh:
 
@@ -283,9 +271,5 @@ Ví dụ:
 
 Animal → Dog → German Shepherd
 
+Khi đó, nếu ảnh là “German Shepherd” nhưng YOLO chỉ đoán “Dog”, mô hình vẫn được xem là đúng một phần.
 
-<<<<<<< HEAD
-Khi đó, nếu ảnh là “German Shepherd” nhưng YOLO chỉ đoán “Dog”, mô hình vẫn được xem là đúng một phần.
-=======
-Khi đó, nếu ảnh là “German Shepherd” nhưng YOLO chỉ đoán “Dog”, mô hình vẫn được xem là đúng một phần.
->>>>>>> 3b264d4 (Add demo.gif and update README)
