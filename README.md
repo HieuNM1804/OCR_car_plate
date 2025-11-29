@@ -1,43 +1,145 @@
-## 🎥 Demo
+
+# Nhận diện biển số xe tự động
+
+## Giới thiệu
+Dự án xây dựng hệ thống nhận diện biển số xe tự động từ video hoặc hình ảnh, sử dụng mô hình YOLO để phát hiện vị trí biển số và EasyOCR để nhận diện ký tự trên biển số. Ứng dụng phù hợp cho kiểm soát phương tiện, bãi đỗ xe, trạm thu phí, v.v.
+
+## Quy trình thực hiện
+
+### 1. Huấn luyện mô hình phát hiện biển số (YOLO)
+Chạy script `YOLO.py` để huấn luyện mô hình phát hiện biển số xe:
+```bash
+python YOLO.py
+```
+Trọng số mô hình sẽ được lưu tại `runs/detect/yolo_car_plate/weights/`.
+
+
+### 2. Quá trình huấn luyện (Training process)
+Biểu đồ loss, mAP, precision, recall qua các epoch:
+
+<p align="center">
+   <img src="runs/detect/yolo_car_plate10/results.png" width="70%" />
+</p>
+
+Các chỉ số chi tiết từng epoch được lưu trong file `results.csv`.
+
+### 3. Đánh giá mô hình trên tập validation
+Chạy script `test.py` để đánh giá mô hình với trọng số tốt nhất trên tập validation:
+```bash
+python test.py
+```
+Kết quả đánh giá:
+- Số ảnh: 87
+- Số instance: 87
+- Precision (P): 0.885
+- Recall (R): 0.975
+- mAP50: 0.954
+- mAP50-95: 0.745
+
+### 4. Kết quả Object Detection (ảnh demo)
+Một số ảnh dự đoán trên tập validation:
+<p float="left">
+   <img src="runs/detect/val3/val_batch0_pred.jpg" width="32%" />
+   <img src="runs/detect/val3/val_batch1_pred.jpg" width="32%" />
+   <img src="runs/detect/val3/val_batch2_pred.jpg" width="32%" />
+</p>
+
+### 5. Nhận diện ký tự biển số (OCR)
+Sau khi phát hiện biển số, script `OCR.py` sẽ cắt vùng biển số và sử dụng EasyOCR để nhận diện ký tự. Kết quả nhận diện sẽ được hiển thị trên video output (`output.mp4`).
+
+## Hướng dẫn sử dụng
+1. Huấn luyện mô hình: `python YOLO.py`
+2. Đánh giá mô hình: `python test.py`
+3. Nhận diện biển số từ video: `python OCR.py` (video đầu vào: `input.mp4`)
+
+## Yêu cầu
+- Python 3.8+
+- ultralytics
+- easyocr
+- opencv-python
+- numpy
+
+Cài đặt nhanh:
+```bash
+pip install ultralytics easyocr opencv-python numpy
+```
+
+## Cấu trúc thư mục
+- `YOLO.py`: Huấn luyện mô hình YOLO
+- `OCR.py`: Nhận diện biển số từ video
+- `test.py`: Đánh giá mô hình
+- `yolo11s.pt`: Trọng số mô hình mẫu
+- `License-Plate-Data/`: Dữ liệu huấn luyện/kiểm thử
+- `runs/`: Kết quả huấn luyện, log, ảnh demo
+
+
+## Quy trình huấn luyện và đánh giá
+
+### 1. Huấn luyện mô hình Object Detection (YOLO)
+- Chạy script `YOLO.py` để huấn luyện mô hình phát hiện biển số xe:
+   ```bash
+   python YOLO.py
+   ```
+- Trọng số mô hình sẽ được lưu tại `runs/detect/yolo_car_plate/weights/`.
+
+### 2. Đánh giá mô hình trên tập validation
+- Chạy script `test.py` để đánh giá mô hình với trọng số tốt nhất trên tập validation:
+   ```bash
+   python test.py
+   ```
+- Kết quả đánh giá:
+   - Số ảnh: 87
+   - Số instance: 87
+   - Precision (P): 0.885
+   - Recall (R): 0.975
+   - mAP50: 0.954
+   - mAP50-95: 0.745
+   - Tốc độ: ~0.8ms preprocess, 8.6ms inference, 3.1ms postprocess mỗi ảnh
+
+### 3. Kết quả Object Detection (ảnh demo)
+Dưới đây là một số ảnh dự đoán trên tập validation:
+
+<p float="left">
+   <img src="runs/detect/val3/val_batch0_pred.jpg" width="32%" />
+   <img src="runs/detect/val3/val_batch1_pred.jpg" width="32%" />
+   <img src="runs/detect/val3/val_batch2_pred.jpg" width="32%" />
+</p>
+
+Ngoài ra, các biểu đồ PR curve, confusion matrix cũng được lưu trong thư mục `runs/detect/val3/`.
+
+### 4. Nhận diện ký tự biển số (OCR)
+- Sau khi phát hiện biển số, script `OCR.py` sẽ cắt vùng biển số và sử dụng EasyOCR để nhận diện ký tự.
+- Kết quả nhận diện sẽ được hiển thị trên video output (`output.mp4`) và bảng thông tin bên cạnh khung hình.
+
+## Yêu cầu
+- Python 3.8+
+- ultralytics
+- easyocr
+- opencv-python
+- numpy
+
+Cài đặt nhanh:
+```bash
+pip install ultralytics easyocr opencv-python numpy
+```
+
+## Định dạng dữ liệu huấn luyện (YOLO)
+- Ảnh: `License-Plate-Data/train/images/`, `test/images/`
+- Nhãn: `License-Plate-Data/train/labels/`, `test/labels/` (định dạng YOLO: class x_center y_center width height)
+- File cấu hình: `License-Plate-Data/data.yaml`
+   ```yaml
+   train: "D:/yolo_car_plate/License-Plate-Data/train"
+   val: "D:/yolo_car_plate/License-Plate-Data/test"
+   nc: 1
+   names: ["license_plate"]
+   ```
+
+## Demo
 ![Demo](demo.gif)
 
-# YOLOv1 — You Only Look Once (2016)
-
-YOLOv1 là phiên bản đầu tiên của họ mô hình **YOLO (You Only Look Once)** — một hướng tiếp cận **phát hiện vật thể (object detection)** hoàn toàn mới, được đề xuất bởi **Joseph Redmon, Santosh Divvala, Ross Girshick và Ali Farhadi** năm 2016.
-
-
-## 1. Ý tưởng cốt lõi
-
-YOLOv1 chia ảnh đầu vào thành một lưới (grid) có kích thước $S \times S$ (thường là $7 \times 7$).
-
-Mỗi cell trong grid sẽ:
-
-* **Dự đoán B bounding boxes** (thường $B=2$).
-* **Confidence score** cho mỗi box (độ tin cậy có vật thể trong box).
-* **Class probabilities** (xác suất thuộc từng lớp vật thể).
-
-Nếu tâm của vật thể nằm trong một cell, cell đó sẽ chịu trách nhiệm phát hiện vật thể đó.
-
-
-
-##  2. Kiến trúc mạng YOLOv1
-![](https://images.viblo.asia/58986feb-d8ac-4255-aee5-329f41bf801d.png)
-YOLOv1 sử dụng một **CNN gồm 24 lớp convolutional** và **2 lớp fully connected**, hoạt động tương tự như **GoogLeNet** (không có Inception).
-
-Cấu trúc tổng quan:
-
-| Loại layer            | Số lớp | Mục đích                                  |
-| --------------------- | ------ | ----------------------------------------- |
-| Conv + ReLU + MaxPool | 24     | Trích xuất đặc trưng (feature extraction) |
-| Fully Connected       | 2      | Dự đoán bounding box và class             |
-
-* Kích thước ảnh đầu vào: $$448 \times 448 \times 3$$
-* Đầu ra cuối cùng: $$7 \times 7 \times (B \times 5 + C)$$
-
-Với:
-
-* $$B=2$$ (2 bounding boxes mỗi cell)
-* $$C=20$$ (20 lớp trong Pascal VOC)
+## Tác giả
+- HieuNM1804
+- Dựa trên mô hình YOLO và EasyOCR
 
 → Kích thước đầu ra:
 $$7 \times 7 \times (2 \times 5 + 20) = 7 \times 7 \times 30$$

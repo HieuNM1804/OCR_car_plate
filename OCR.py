@@ -5,7 +5,7 @@ import numpy as np
 from collections import deque, Counter
 import re
 
-model_path = r"D:\yolo_car_plate\runs\detect\yolo_car_plate10\weights\best.pt"
+model_path = r"runs/detect/yolo_car_plate10/weights/best.pt"
 model = YOLO(model_path)
 
 reader = easyocr.Reader(['en'])
@@ -22,8 +22,8 @@ def read_plate(plate_img):
         return text.strip()
     return ""
 
-input_path = r"D:\yolo_car_plate\input.mp4"
-output_path = r"D:\yolo_car_plate\output.mp4"
+input_path = r"input.mp4"
+output_path = r"output.mp4"
 
 cap = cv2.VideoCapture(input_path)
 fps = cap.get(cv2.CAP_PROP_FPS)
